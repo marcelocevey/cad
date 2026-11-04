@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabalho Acadêmico - SolidWorks e Modelamento CAD 3D | SENAI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --senai-blue: #0047B6;
+      --senai-dark-blue: #002B70;
+      --senai-orange: #E84910;
+    }
+    html, body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F4F6F9;
+      margin: 0;
+      padding: 0;
+      color: #1E293B;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .senai-pillar {
+      width: 14px;
+      background: linear-gradient(170deg, 
+        var(--senai-orange) 0%, 
+        var(--senai-orange) 28%, 
+        #FFFFFF 28.5%, 
+        #FFFFFF 38%, 
+        var(--senai-blue) 38.5%, 
+        var(--senai-blue) 100%);
+    }
+    .senai-header-stripe {
+      height: 6px;
+      background: linear-gradient(90deg, 
+        var(--senai-orange) 0%, 
+        var(--senai-orange) 25%, 
+        #FFFFFF 25%, 
+        #FFFFFF 30%, 
+        var(--senai-blue) 30%, 
+        var(--senai-blue) 100%);
+    }
+    textarea {
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      resize: vertical;
+    }
+    textarea:focus {
+      border-color: var(--senai-blue);
+      box-shadow: 0 0 0 3px rgba(0, 71, 182, 0.15);
+      outline: none;
+    }
+    .print-only {
+      display: none;
+    }
+
+    /* Formatação exclusiva para exportação limpa em PDF */
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+      html, body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .main-wrapper {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+      }
+      .question-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #CBD5E1 !important;
+        margin-bottom: 14px !important;
+      }
+      header {
+        background-color: #0047B6 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .senai-pillar, .senai-header-stripe, .badge-print {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body class="p-2 sm:p-6 min-h-screen flex flex-col justify-between">
+
+  <div class="main-wrapper max-w-5xl w-full mx-auto bg-[#F4F6F9] rounded-2xl shadow-lg border border-slate-300 overflow-hidden my-auto">
+
+    <!-- CABEÇALHO INSTITUCIONAL SENAI / FIESC -->
+    <header class="bg-[#0047B6] text-white">
+      <div class="senai-header-stripe"></div>
+      <div class="px-5 py-4 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="flex items-center bg-white px-3 py-1 rounded shadow-sm">
+            <span class="font-black text-xl tracking-tighter italic text-[#0047B6]">SENA<span class="text-[#E84910]">I</span></span>
+            <span class="mx-2 text-slate-300">|</span>
+            <span class="font-extrabold text-xs tracking-widest text-slate-700">FIESC</span>
+          </div>
+          <div>
+            <span class="text-[11px] uppercase tracking-widest text-blue-200 font-semibold block">Trabalho Acadêmico Discursivo</span>
+            <h1 class="text-base sm:text-lg font-bold leading-tight">SolidWorks e Modelamento CAD 3D</h1>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 text-right">
+          <div class="no-print">
+            <p class="text-[11px] text-blue-200">Docente Responsável</p>
+            <p class="text-xs font-bold">Prof. Msc. Marcelo Cevey</p>
+          </div>
+          <div class="bg-blue-950/90 border border-blue-400/40 px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 no-print">
+            <i class="fa-solid fa-pen-ruler text-[#E84910]"></i>
+            <span>Respondidas: <strong id="progress-count" class="mono text-white">0 / 10</strong></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="p-4 sm:p-6">
+
+      <!-- IDENTIFICAÇÃO DO ESTUDANTE -->
+      <section class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 border border-slate-200 flex">
+        <div class="senai-pillar shrink-0"></div>
+        <div class="p-5 sm:p-6 w-full">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-4 border-b border-slate-100">
+            <div>
+              <h2 class="text-lg font-extrabold text-[#0047B6] uppercase tracking-tight">Identificação do Estudante</h2>
+              <p class="text-xs text-slate-500 no-print">
+                Preencha seus dados e responda às 10 questões técnicas de forma discursiva. Ao concluir, gere o arquivo PDF e envie para <span class="mono font-semibold text-slate-700">marcelo.ozorio@edu.sc.senai.br</span>.
+              </p>
+            </div>
+            <span class="badge-print bg-orange-50 text-[#E84910] border border-orange-200 text-xs font-bold px-3 py-1 rounded-full">
+              10 Questões Discursivas • Modelagem 3D
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Nome Completo do Aluno *</label>
+              <input type="text" id="studentName" oninput="syncStudentInfo()" placeholder="Digite seu nome completo..." 
+                class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-[#0047B6] outline-none text-sm font-medium text-slate-800">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Turma / Curso *</label>
+              <input type="text" id="studentClass" oninput="syncStudentInfo()" placeholder="Ex: Mecânica / CAD 2026" 
+                class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-[#0047B6] outline-none text-sm font-medium text-slate-800">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Data de Entrega *</label>
+              <input type="text" id="studentDate" oninput="syncStudentInfo()" 
+                class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-[#0047B6] outline-none text-sm font-medium text-slate-800 mono">
+            </div>
+          </div>
+
+          <!-- Barra de progresso visual (Oculta na impressão) -->
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-4 no-print">
+            <span class="text-xs font-semibold text-slate-500">
+              <i class="fa-solid fa-floppy-disk text-[#0047B6] mr-1"></i> Rascunho salvo automaticamente no navegador enquanto você digita.
+            </span>
+            <div class="w-48 bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="progress-bar" class="bg-[#E84910] h-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTAINER DAS 10 QUESTÕES DISCURSIVAS -->
+      <div id="questions-container" class="space-y-6"></div>
+
+      <!-- INSTRUÇÕES PASSO A PASSO PARA GERAR O PDF E ENVIAR POR E-MAIL -->
+      <section class="mt-8 bg-white rounded-xl shadow-md border-2 border-[#0047B6] overflow-hidden no-print">
+        <div class="bg-[#0047B6] text-white px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-file-pdf text-2xl text-[#E84910] bg-white p-1.5 rounded-lg"></i>
+            <div>
+              <h3 class="text-base sm:text-lg font-extrabold uppercase tracking-tight">Instruções de Finalização e Entrega em PDF</h3>
+              <p class="text-xs text-blue-100">Siga os 3 passos abaixo para gerar o documento oficial e enviar ao professor</p>
+            </div>
+          </div>
+          <span class="bg-blue-900/90 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-semibold mono">
+            Destino: marcelo.ozorio@edu.sc.senai.br
+          </span>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Passo 1 -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-[#0047B6] text-white text-xs font-bold flex items-center justify-center">1</span>
+                <h4 class="font-extrabold text-sm text-slate-800">Conferir e Gerar o PDF</h4>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Verifique se respondeu às 10 questões e clique no botão laranja <strong>"Gerar Arquivo PDF do Trabalho"</strong> abaixo.
+              </p>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-[#0047B6] text-white text-xs font-bold flex items-center justify-center">2</span>
+                <h4 class="font-extrabold text-sm text-slate-800">Salvar como PDF</h4>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Na janela de impressão que se abrirá, em <strong>Destino / Impressora</strong>, selecione a opção <strong>"Salvar como PDF"</strong> (ou <em>Microsoft Print to PDF</em>) e salve no seu computador com o seu nome.
+              </p>
+            </div>
+
+            <!-- Passo 3 -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-[#E84910] text-white text-xs font-bold flex items-center justify-center">3</span>
+                <h4 class="font-extrabold text-sm text-slate-800">Enviar por E-mail</h4>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Envie um e-mail para <strong class="mono text-[#0047B6]">marcelo.ozorio@edu.sc.senai.br</strong> com o assunto <em>"Trabalho SolidWorks - [Seu Nome]"</em> e <strong>anexe o arquivo PDF</strong> gerado.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" onclick="copiarEmailProfessor()"
+                class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-4 py-2.5 rounded-lg border border-slate-300 transition cursor-pointer flex items-center gap-1.5">
+                <i class="fa-regular fa-copy text-[#0047B6]"></i>
+                <span>Copiar E-mail: marcelo.ozorio@edu.sc.senai.br</span>
+              </button>
+              <button type="button" onclick="abrirClienteEmail()"
+                class="bg-blue-50 hover:bg-blue-100 text-[#0047B6] font-bold text-xs px-4 py-2.5 rounded-lg border border-blue-200 transition cursor-pointer flex items-center gap-1.5">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span>Abrir E-mail Pré-Preenchido</span>
+              </button>
+            </div>
+
+            <button type="button" onclick="gerarPDFTrabalho()"
+              class="w-full sm:w-auto bg-[#E84910] hover:bg-[#c93b09] text-white font-extrabold text-sm px-7 py-3.5 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-2">
+              <i class="fa-solid fa-file-pdf text-base"></i>
+              <span>Gerar Arquivo PDF do Trabalho</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- RODAPÉ DA APLICAÇÃO (Com classe no-print para não exibir atribuição de desenvolvedor no PDF exportado) -->
+    <footer class="bg-[#002B70] text-white border-t-4 border-[#E84910] px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-blue-100 no-print">
+      <div class="flex items-center gap-2">
+        <span class="font-black text-base italic tracking-tighter text-white">SENA<span class="text-[#E84910]">I</span></span>
+        <span class="text-blue-400">|</span>
+        <span>Serviço Nacional de Aprendizagem Industrial • FIESC</span>
+      </div>
+      <div class="text-center sm:text-right">
+        <span>Aplicação desenvolvida por Prof. Msc. Marcelo Cevey • Destino de Entrega: marcelo.ozorio@edu.sc.senai.br</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const PROFESSOR_EMAIL = "marcelo.ozorio@edu.sc.senai.br";
+
+    // Banco das 10 questões discursivas sobre SolidWorks e Modelamento CAD 3D
+    const questionsData = [
+      {
+        id: 1,
+        topic: "Parametrização e Intenção de Projeto (Design Intent)",
+        bloom: "Compreender / Analisar",
+        context: "No modelamento paramétrico em SolidWorks, a 'Intenção de Projeto' (Design Intent) define como o modelo 3D reagirá quando cotas ou geometrias forem alteradas futuramente. Imagine uma flange circular que deve ter um furo sempre centralizado na peça, independentemente de o diâmetro externo ser alterado de 100 mm para 180 mm.",
+        command: "Explique o que é Intenção de Projeto no SolidWorks e descreva como você deve vincular geometricamente ou equacionar esse furo no esboço para garantir que ele permaneça sempre no centro sem precisar editar sua posição manualmente.",
+        placeholder: "Descreva o conceito de Intenção de Projeto e como utilizar relações geométricas (ex: coincidente com a origem, linhas de centro) ou equações..."
+      },
+      {
+        id: 2,
+        topic: "Esboços 2D (Sketches) e Graus de Liberdade",
+        bloom: "Compreender / Diferenciar",
+        context: "Ao desenhar um esboço 2D (Sketch) no SolidWorks, as entidades geométricas mudam de cor conforme o seu estado de definição: Azul, Preto, Amarelo ou Vermelho, refletindo o status na barra inferior da janela ('Subdefinido', 'Totalmente Definido' ou 'Sobredefinido').",
+        command: "Diferencie tecnicamente um esboço Subdefinido (entidades azuis), Totalmente Definido (entidades pretas) e Sobredefinido (amarelo/vermelho), justificando por que as boas práticas de engenharia exigem que os esboços estejam Totalmente Definidos antes de gerar um recurso 3D.",
+        placeholder: "Explique o significado de cada estado de definição e os riscos de deixar esboços azuis (subdefinidos) em projetos mecânicos..."
+      },
+      {
+        id: 3,
+        topic: "Geometria de Referência: Origem e Planos Padrão",
+        bloom: "Aplicar",
+        context: "Ao iniciar uma nova peça (.SLDPRT), o SolidWorks disponibiliza três planos ortogonais nativos (Frontal, Superior e Direito) que se cruzam na Origem (0,0,0). A escolha incorreta do primeiro plano e do posicionamento em relação à origem impacta diretamente as etapas posteriores.",
+        command: "Explique qual é a importância estratégica da Origem (0,0,0) e da escolha correta do Plano inicial no aproveitamento de simetria (planos médios), na aplicação de espelhamentos (Mirror) e na geração das vistas padronizadas na folha de detalhamento 2D.",
+        placeholder: "Discorra sobre o uso da Origem como âncora, simetria por Plano Médio e orientação das vistas..."
+      },
+      {
+        id: 4,
+        topic: "Recursos Base de Sólidos: Extrusão, Revolução, Varredura e Loft",
+        bloom: "Analisar / Aplicar",
+        context: "O SolidWorks oferece quatro comandos fundamentais para criação de volume sólido: Ressalto/Base Extrudado (Extruded Boss), Ressalto/Base Revolucionado (Revolved Boss), Ressalto/Base Varrido (Swept Boss) e Ressalto/Base por Loft (Lofted Boss).",
+        command: "Para cada um dos quatro recursos citados (Extrusão, Revolução, Varredura e Loft), explique seu princípio geométrico de geração (perfis, eixos ou caminhos necessários) e cite um exemplo real de componente mecânico ideal para ser modelado com cada um deles.",
+        placeholder: "Detalhe o funcionamento e cite 1 exemplo prático de peça para Extrusão, 1 para Revolução, 1 para Varredura e 1 para Loft..."
+      },
+      {
+        id: 5,
+        topic: "Ordem da Árvore de Projeto (FeatureManager) e Relação Pai-Filho",
+        bloom: "Analisar / Avaliar",
+        context: "Na árvore de projeto (FeatureManager Design Tree), os recursos são empilhados cronologicamente criando dependências 'Pai-Filho' (Parent-Child). Além disso, operações como Filetes (Fillets), Chanfros (Chamfers) e Casca (Shell) alteram drasticamente a topologia final dependendo da ordem em que são inseridas.",
+        command: "Explique como funciona a dependência Pai-Filho no SolidWorks, o que ocorre quando um recurso Pai é suprimido ou excluído, e qual é a diferença geométrica prática de aplicar o recurso Casca (Shell) ANTES ou DEPOIS dos Filetes externos de uma caixa plástica.",
+        placeholder: "Explique a relação Pai-Filho, a barra de reversão (Rollback) e o efeito da ordem entre Filete e Casca..."
+      },
+      {
+        id: 6,
+        topic: "Assistente de Perfuração (Hole Wizard) vs. Corte Extrudado",
+        bloom: "Compreender / Aplicar",
+        context: "Para criar furos em uma peça 3D, um usuário iniciante costuma desenhar um círculo e aplicar 'Corte Extrudado' (Extruded Cut), enquanto um projetista experiente utiliza o 'Assistente de Perfuração' (Hole Wizard) com padrões normativos (ISO/DIN/ANSI).",
+        command: "Quais são as vantagens técnicas de utilizar o Assistente de Perfuração (Hole Wizard) em vez de cortes extrudados simples para furos roscados, escareados (rebaixos para parafusos Allen) e na geração automática de chamadas de furo e listas de fixadores no detalhamento?",
+        placeholder: "Compare o Corte Extrudado comum com o Hole Wizard quanto à normalização, representação de rosca cosmética e detalhamento 2D..."
+      },
+      {
+        id: 7,
+        topic: "Montagens (.SLDASM): Abordagens Bottom-Up vs. Top-Down e Mates",
+        bloom: "Analisar",
+        context: "No ambiente de Montagem (.SLDASM), podemos desenvolver conjuntos mecânicos seguindo a metodologia Bottom-Up (de baixo para cima) ou Top-Down (de cima para baixo / no contexto da montagem), restringindo os movimentos dos componentes através de Posicionamentos (Mates).",
+        command: "Diferencie a modelagem Bottom-Up da modelagem Top-Down em montagens e explique como os Posicionamentos Padrão (Coincidente, Concêntrico, Paralelo, Distância) são combinados para remover os 6 graus de liberdade (3 translações e 3 rotações) de um componente móvel.",
+        placeholder: "Explique Bottom-Up vs. Top-Down e como os Mates restringem os graus de liberdade no espaço 3D..."
+      },
+      {
+        id: 8,
+        topic: "Detalhamento Técnico 2D (.SLDDRW) e Associatividade Bidirecional",
+        bloom: "Compreender / Aplicar",
+        context: "A geração do desenho técnico 2D (.SLDDRW) no SolidWorks mantém um vínculo associativo bidirecional com o modelo 3D (.SLDPRT / .SLDASM). Nessa etapa, inserem-se vistas ortogonais, vistas de seção (corte), vistas de detalhe, tolerâncias e Lista de Materiais (BOM).",
+        command: "Explique o que significa a 'associatividade bidirecional' entre os arquivos .SLDPRT, .SLDASM e .SLDDRW, e descreva os cuidados que o projetista deve ter ao enviar arquivos do SolidWorks para outro computador (por que enviar apenas o arquivo .SLDDRW isolado gera erro de referência?).",
+        placeholder: "Explique a associatividade entre Peça, Montagem e Desenho 2D e a necessidade de usar 'Pack and Go' ou enviar os arquivos vinculados..."
+      },
+      {
+        id: 9,
+        topic: "Configurações, Equações e Tabelas de Projeto (Design Tables)",
+        bloom: "Aplicar / Criar",
+        context: "Em indústrias metalmecânicas, é comum fabricar famílias de peças semelhantes (por exemplo, buchas, eixos ou flanges com 5 tamanhos padronizados diferentes) onde a topologia é idêntica, variando apenas algumas cotas e a supressão de furos.",
+        command: "Como o recurso de Configurações (Configurations) e Tabelas de Projeto (Design Tables baseadas em Excel) do SolidWorks permite gerenciar uma família de peças dentro de um único arquivo .SLDPRT, evitando a duplicação de arquivos no servidor?",
+        placeholder: "Explique o uso de Configurações, variáveis globais e Tabelas de Projeto para criar famílias de componentes..."
+      },
+      {
+        id: 10,
+        topic: "Verificação de Projeto: Propriedades de Massa e Detecção de Interferência",
+        bloom: "Avaliar",
+        context: "Antes de liberar o projeto 3D para a fabricação (usinagem, corte a laser ou impressão 3D), o engenheiro utiliza ferramentas da aba 'Avaliar' (Evaluate), tais como Propriedades de Massa (Mass Properties) e Detecção de Interferência (Interference Detection).",
+        command: "Explique quais informações críticas a ferramenta 'Propriedades de Massa' fornece após a atribuição correta do material da biblioteca (densidade) e como a 'Detecção de Interferência' evita falhas graves de montagem física na oficina.",
+        placeholder: "Cite os dados obtidos em Propriedades de Massa (massa, volume, centro de massa, momentos de inércia) e a utilidade da Detecção de Interferência..."
+      }
+    ];
+
+    function initApp() {
+      // Preenche data atual
+      const today = new Date().toLocaleDateString("pt-BR");
+      document.getElementById("studentDate").value = today;
+
+      // Recupera dados do aluno se salvos no localStorage
+      const savedName = localStorage.getItem("sw_studentName") || "";
+      const savedClass = localStorage.getItem("sw_studentClass") || "";
+      if (savedName) document.getElementById("studentName").value = savedName;
+      if (savedClass) document.getElementById("studentClass").value = savedClass;
+
+      const container = document.getElementById("questions-container");
+      container.innerHTML = "";
+
+      questionsData.forEach((q, idx) => {
+        const savedAnswer = localStorage.getItem(`sw_ans_${q.id}`) || "";
+        const numStr = String(idx + 1).padStart(2, "0");
+
+        const cardHtml = `
+          <article class="question-card bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex">
+            <div class="senai-pillar shrink-0"></div>
+            <div class="p-5 sm:p-6 w-full">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <span class="badge-print bg-[#0047B6] text-white font-black text-xs px-3 py-1 rounded uppercase tracking-wider mono">
+                    Questão ${numStr}
+                  </span>
+                  <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded">
+                    ${q.topic}
+                  </span>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-500 border border-slate-200 px-2.5 py-0.5 rounded-full">
+                  Bloom: ${q.bloom}
+                </span>
+              </div>
+
+              <!-- Contexto -->
+              <div class="mb-3">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-0.5">Contexto Técnico</span>
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${q.context}</p>
+              </div>
+
+              <!-- Comando -->
+              <div class="mb-4 bg-blue-50/70 border-l-4 border-[#0047B6] p-3 rounded-r-lg">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#0047B6] block mb-0.5">Comando Discursivo</span>
+                <p class="text-xs sm:text-sm font-bold text-slate-800">${q.command}</p>
+              </div>
+
+              <!-- Campo Discursivo Interativo (Oculto na impressão e substituído pelo bloco print-only expandido) -->
+              <div class="no-print">
+                <div class="flex items-center justify-between mb-1">
+                  <label for="ans-${q.id}" class="text-xs font-bold uppercase text-slate-600">
+                    Sua Resposta Técnica:
+                  </label>
+                  <span id="char-count-${q.id}" class="text-[11px] text-slate-400 mono">0 caracteres</span>
+                </div>
+                <textarea id="ans-${q.id}" rows="4"
+                  oninput="handleAnswerInput(${q.id}, this)"
+                  placeholder="${q.placeholder}"
+                  class="w-full p-3.5 rounded-xl border border-slate-300 text-sm text-slate-800 leading-relaxed bg-slate-50/40 focus:bg-white">${savedAnswer}</textarea>
+              </div>
+
+              <!-- Bloco Exclusivo para Exportação Completa no PDF (Garante que textos longos nunca sejam cortados) -->
+              <div class="print-only mt-2">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#0047B6] block mb-1">Resposta do Aluno:</span>
+                <div id="print-ans-${q.id}" class="p-3 rounded-lg border border-slate-300 bg-slate-50 text-xs text-slate-800 whitespace-pre-wrap leading-relaxed min-h-[70px]"></div>
+              </div>
+            </div>
+          </article>
+        `;
+        container.insertAdjacentHTML("beforeend", cardHtml);
+      });
+
+      // Atualiza espelhos de impressão e contadores iniciais
+      questionsData.forEach((q) => {
+        const el = document.getElementById(`ans-${q.id}`);
+        if (el) handleAnswerInput(q.id, el);
+      });
+    }
+
+    function syncStudentInfo() {
+      const name = document.getElementById("studentName").value;
+      const cls = document.getElementById("studentClass").value;
+      localStorage.setItem("sw_studentName", name);
+      localStorage.setItem("sw_studentClass", cls);
+    }
+
+    function handleAnswerInput(qId, textareaEl) {
+      const val = textareaEl.value;
+      localStorage.setItem(`sw_ans_${qId}`, val);
+
+      // Atualiza contador de caracteres
+      const charCountEl = document.getElementById(`char-count-${qId}`);
+      if (charCountEl) {
+        charCountEl.textContent = `${val.trim().length} caracteres`;
+      }
+
+      // Atualiza o espelho de impressão para o PDF
+      const printEl = document.getElementById(`print-ans-${qId}`);
+      if (printEl) {
+        printEl.textContent = val.trim() ? val : "[ Questão não respondida pelo aluno ]";
+      }
+
+      updateOverallProgress();
+    }
+
+    function updateOverallProgress() {
+      let answered = 0;
+      questionsData.forEach((q) => {
+        const val = (localStorage.getItem(`sw_ans_${q.id}`) || "").trim();
+        if (val.length >= 10) answered++;
+      });
+
+      document.getElementById("progress-count").textContent = `${answered} / 10`;
+      document.getElementById("progress-bar").style.width = `${(answered / 10) * 100}%`;
+    }
+
+    function gerarPDFTrabalho() {
+      const studentName = document.getElementById("studentName").value.trim();
+      const studentClass = document.getElementById("studentClass").value.trim();
+
+      if (!studentName || !studentClass) {
+        alert("Por favor, preencha seu Nome Completo e Turma/Curso no topo da página antes de gerar o PDF.");
+        document.getElementById("studentName").focus();
+        return;
+      }
+
+      // Altera temporariamente o título da página para sugerir um nome de arquivo PDF limpo
+      const originalTitle = document.title;
+      const safeName = studentName.replace(/\s+/g, "_");
+      document.title = `Trabalho_SolidWorks_CAD3D_${safeName}`;
+
+      window.print();
+
+      setTimeout(() => {
+        document.title = originalTitle;
+      }, 1000);
+    }
+
+    function copiarEmailProfessor() {
+      navigator.clipboard.writeText(PROFESSOR_EMAIL).then(() => {
+        alert(`E-mail copiado: ${PROFESSOR_EMAIL}`);
+      }).catch(() => {
+        prompt("Copie o endereço de e-mail abaixo:", PROFESSOR_EMAIL);
+      });
+    }
+
+    function abrirClienteEmail() {
+      const studentName = document.getElementById("studentName").value.trim() || "Aluno";
+      const studentClass = document.getElementById("studentClass").value.trim() || "Turma";
+      const subject = encodeURIComponent(`Trabalho SolidWorks e CAD 3D - ${studentName} (${studentClass})`);
+      const body = encodeURIComponent(
+        `Olá, Prof. Marcelo,
+
+Segue em anexo o arquivo PDF referente ao Trabalho Discursivo de SolidWorks e Modelamento CAD 3D.
+
+Aluno(a): ${studentName}
+Turma: ${studentClass}
+
+Atenciosamente,
+${studentName}`
+      );
+      window.open(`mailto:${PROFESSOR_EMAIL}?subject=${subject}&body=${body}`, "_blank");
+    }
+
+    window.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
